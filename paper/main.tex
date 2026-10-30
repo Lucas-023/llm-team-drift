@@ -1,0 +1,68 @@
+\documentclass{article}
+% Course paper: 4-8 pages. [preprint] shows author names and drops the line numbers;
+% use \usepackage{neurips_2025} without options for the anonymous submission look.
+\usepackage[preprint]{neurips_2025}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts,amsmath}
+\IfFileExists{microtype.sty}{\usepackage{microtype}}{}
+\usepackage{xcolor}
+\usepackage{graphicx}
+
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+
+\title{Do RL-Trained LLM Teams Keep Talking Readably?\\
+Measuring Language Drift in a Speaker--Listener Game}
+
+\author{Lucas Barcelos \\ \todo{university, department} \\ \texttt{lucasbbarcel@gmail.com}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\todo{4--6 sentences: problem (multi-agent RL on LLMs may drift away from readable language),
+setup (two LoRA adapters on Qwen2.5-0.5B, GRPO, text referential game),
+measures (outsider accuracy, private-code gap, perplexity, honesty),
+main result (when and how much drift appears; what KL, partner swap and readability reward do).}
+\end{abstract}
+
+\section{Introduction}
+\todo{Motivation: LLM agents increasingly talk to each other and are trained jointly with RL.
+Classic emergent-communication work found drift with small networks
+\citep{lee2019countering,lazaridou2020multi}; recent work finds drift in single-model RLVR
+\citep{sullivan2026drift} and warns about chain-of-thought monitorability \citep{korbak2025cot,baker2025monitoring}.
+Gap: no controlled study of drift between \emph{RL-co-trained pretrained LLMs}. Contributions list.}
+
+\section{Related work}
+\todo{Emergent communication \citep{lazaridou2020emergent,lowe2019pitfalls}; drift countermeasures;
+language drift in RLVR; multi-agent LLM RL; steganography / collusion \citep{motwani2024secret}.}
+
+\section{Setup}
+\subsection{Game}
+\todo{1,536 objects, $D$ distractors, similarity knob, 20\% held-out objects; single-step game.}
+\subsection{Agents and training}
+\todo{Speaker/listener as two LoRA adapters on one frozen base \citep{hu2021lora,qwen2025};
+GRPO \citep{shao2024deepseekmath} with group size $G$, KL to the base model.}
+\subsection{Drift measures}
+\todo{Accuracy; outsider accuracy; $\mathrm{Gap}=\mathrm{Acc}_{\text{trained}}-\mathrm{Acc}_{\text{out}}$;
+perplexity under the base model; honesty; vocabulary Jensen--Shannon drift.}
+
+\section{Experiments}
+\todo{E0 zero-shot; E1 does drift happen; E2 KL strength; E3 pressure ($L$, $D$);
+E4 partner swap; E5 readability reward. Figures: curves over training, accuracy--readability frontier.}
+
+\section{Discussion and limitations}
+\todo{Small model, synthetic game, single-step; what transfers to real multi-agent LLM systems.}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\appendix
+\section{Hyperparameters and example messages}
+\todo{Table from configs/base.yaml; messages at steps 0 / 1000 / 3000.}
+
+\end{document}

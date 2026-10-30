@@ -1,0 +1,11 @@
+runs/*
+!runs/.gitkeep
+__pycache__/
+*.pyc
+wandb/
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.bbl
+paper/*.blg
+*.pdf

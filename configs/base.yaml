@@ -1,0 +1,50 @@
+# Default setting = experiment E1. Override any key from the command line:
+#   python scripts/train.py --config configs/base.yaml --set beta=0.0 seed=1 run_name=e2_beta0_s1
+
+run_name: e1_default_s0
+out_dir: runs
+seed: 0
+wandb_project: null          # e.g. "llm-team-drift" to also log to Weights & Biases
+
+# model
+model: Qwen/Qwen2.5-0.5B-Instruct
+finetune: lora               # lora | full  (full = every weight trained; E7 control)
+lora_rank: 16
+dtype: float32               # weight dtype. V100 has no bf16: keep float32 + amp fp16
+amp: float16                 # autocast dtype for forward passes (float16 | bfloat16 | null)
+optim: adamw                 # adamw | adamw8bit (bitsandbytes; saves memory in full mode)
+
+# game
+n_distractors: 4             # D
+similarity: 1                # attributes each distractor shares with the target (0-3)
+heldout_frac: 0.2
+max_msg_tokens: 16           # L
+n_eval_games: 500
+
+# GRPO
+steps: 3000
+batch_games: 32
+group_size: 8                # G messages per game
+micro_bs: 32                 # lower if you run out of GPU memory
+temperature: 1.0
+lr_speaker: 2.0e-5
+lr_listener: 2.0e-5
+lr_full: 2.0e-6               # replaces both lrs when finetune=full (full FT needs ~10x lower)
+beta: 0.05                   # speaker KL to base model
+beta_listener: 0.05          # listener KL to base model
+smooth_speaker_reward: true  # speaker reward = pi_L(target|m) instead of sampled 0/1
+update: joint                # joint | alternate
+grad_clip: 1.0
+
+# E4 partner swap
+listener_pool: 1             # >1: pool of listener adapters, one random per batch
+listener_reset_every: 0      # >0: reset listener(s) to the base model every N steps
+
+# E5 readability reward
+readability_bonus: 0.0       # lambda; bonus = lambda * (base-model reader decodes the message)
+
+# evaluation
+eval_every: 200
+save_every: 1000
+outside_readers: []          # e.g. [Qwen/Qwen2.5-3B-Instruct]
+wordlist: /usr/share/dict/words   # for the non-word share; skipped if missing
